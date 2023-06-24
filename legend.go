@@ -170,7 +170,17 @@ func LegendThin(c *Chart, userDefaults ...Style) Renderable {
 
 		legendBoxHeight := textHeight + legendStyle.Padding.Top + legendStyle.Padding.Bottom
 		chartPadding := cb.Top
-		legendYMargin := (chartPadding - legendBoxHeight) >> 1
+
+		//if title text is set, we have to compensate the left space for ThinLegend
+		var chartTitleLegendOffset int
+		if c.Title != "" {
+			//let's asume the extra space needed is equal to title font size
+			chartTitleLegendOffset = int(c.TitleStyle.FontSize)
+		} else {
+			chartTitleLegendOffset = 0
+		}
+
+		legendYMargin := chartTitleLegendOffset + (chartPadding-legendBoxHeight)>>1
 
 		legendBox := Box{
 			Left:   cb.Left,
